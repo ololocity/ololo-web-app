@@ -10,8 +10,10 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig)
 
+const REDIRECT_URL = 'exp://exp.host/@romanenko/ololo'
+
 export default async (req, res) => {
-// Confirm the link is a sign-in with email link.
+  // Confirm the link is a sign-in with email link.
   if (firebase.auth().isSignInWithEmailLink(req.url)) {
     // Additional state parameters can also be passed via URL.
     // This can be used to continue the user's intended action before triggering
@@ -20,13 +22,18 @@ export default async (req, res) => {
     // the flow on the same device where they started it.
     // The client SDK will parse the code from the link for you.
     try {
-      await firebase.auth().signInWithEmailLink(undefined, req.url)
-      res.writeHead(301,{Location: 'exp://exp.host/@romanenko/ololo'});
+      const result = await firebase
+        .auth()
+        .signInWithEmailLink(undefined, req.url)
+
+      console.log("User's e-mail verified", result)
+
+      res.writeHead(301, { Location: REDIRECT_URL })
       res.end()
     } catch (error) {
-        // Some error occurred, you can inspect the code: error.code
-        // Common errors could be invalid email and invalid or expired OTPs.
-        console.log(error)
+      // Common errors could be invalid email and invalid or expired OTPs.
+      console.log(`Error verifying e-mail. Code: ${error.code}`)
+      console.log(error)
     }
   }
 }
