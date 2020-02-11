@@ -1,4 +1,5 @@
 import * as firebase from 'firebase'
+import { parse as parseUrl } from 'url'
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -13,6 +14,7 @@ firebase.initializeApp(firebaseConfig)
 const REDIRECT_URL = 'exp://exp.host/@romanenko/ololo'
 
 export default async (req, res) => {
+
   // Confirm the link is a sign-in with email link.
   if (firebase.auth().isSignInWithEmailLink(req.url)) {
     // Additional state parameters can also be passed via URL.
@@ -22,9 +24,11 @@ export default async (req, res) => {
     // the flow on the same device where they started it.
     // The client SDK will parse the code from the link for you.
     try {
+      const { query: { email } } = parseUrl(req.url, true)
+
       const result = await firebase
         .auth()
-        .signInWithEmailLink(undefined, req.url)
+        .signInWithEmailLink(email, req.url)
 
       console.log("User's e-mail verified", result)
 
