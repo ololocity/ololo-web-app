@@ -14,7 +14,6 @@ firebase.initializeApp(firebaseConfig)
 const REDIRECT_URL = 'exp://exp.host/@romanenko/ololo'
 
 export default async (req, res) => {
-
   // Confirm the link is a sign-in with email link.
   if (firebase.auth().isSignInWithEmailLink(req.url)) {
     // Additional state parameters can also be passed via URL.
@@ -28,7 +27,7 @@ export default async (req, res) => {
 
       const result = await firebase
         .auth()
-        .signInWithEmailLink(email, req.url)
+        .signInWithEmailLink(String(email), req.url)
 
       console.log("User's e-mail verified", result)
 
