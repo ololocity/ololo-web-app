@@ -10,7 +10,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig)
 
-export default (req, res) => {
+export default async (req, res) => {
 // Confirm the link is a sign-in with email link.
   if (firebase.auth().isSignInWithEmailLink(req.url)) {
     // Additional state parameters can also be passed via URL.
@@ -26,6 +26,7 @@ export default (req, res) => {
     } catch (error) {
         // Some error occurred, you can inspect the code: error.code
         // Common errors could be invalid email and invalid or expired OTPs.
+        console.log(error)
     }
   }
 }
