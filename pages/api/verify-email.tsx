@@ -11,7 +11,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig)
 
-const REDIRECT_URL = 'exp://exp.host/@romanenko/ololo'
+const REDIRECT_URL = 'exp://10.121.0.108:190000'
 
 export default async (req, res) => {
   // Confirm the link is a sign-in with email link.
